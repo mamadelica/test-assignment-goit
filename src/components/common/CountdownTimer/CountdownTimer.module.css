@@ -1,0 +1,42 @@
+.countdown {
+  display: inline-flex;
+  align-items: start;
+  gap: 10px;
+}
+
+.segment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.value {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 114%;
+  text-align: right;
+}
+
+.seconds {
+  color: #0f7c41;
+}
+
+.label {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 8px;
+  text-align: center;
+  color: #010101;
+}
+
+.separator {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 114%;
+  text-align: right;
+  color: #010101;
+  color: rgba(1, 1, 1, 0.2);
+}

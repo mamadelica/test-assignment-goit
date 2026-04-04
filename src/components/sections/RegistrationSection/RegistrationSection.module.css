@@ -1,0 +1,247 @@
+.registrationSection {
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+
+.layoutWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 24px;
+}
+
+.logo {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.webinarInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 16px;
+}
+
+.webinarMetaWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.webinarMeta {
+  position: relative;
+
+  border: 0.4px solid #0f7c41;
+  padding: 4px 8px;
+
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 143%;
+  letter-spacing: 0.08em;
+  text-align: center;
+  color: #0f7c41;
+}
+
+/* верхні кути */
+.webinarMeta::before,
+.webinarMeta::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #0f7c41;
+}
+
+.webinarMeta::before {
+  top: -2px;
+  left: -2px;
+}
+
+.webinarMeta::after {
+  top: -2px;
+  right: -2px;
+}
+
+/* нижні кути */
+.webinarMeta span::before,
+.webinarMeta span::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #0f7c41;
+}
+
+.webinarMeta span::before {
+  bottom: -2px;
+  left: -2px;
+}
+
+.webinarMeta span::after {
+  bottom: -2px;
+  right: -2px;
+}
+
+.eventTime {
+  font-weight: 700;
+}
+
+.mainTitle {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 125%;
+  color: #010101;
+  max-width: 320px;
+}
+
+.description {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #010101;
+  max-width: 320px;
+}
+
+/* Registration Form */
+
+.formWrapper {
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+
+  box-shadow: 0 0 20px 0 rgba(15, 124, 65, 0.2);
+  background: #fff;
+}
+
+.timerLabel {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 140%;
+  text-align: center;
+  color: #010101;
+}
+
+.primaryBtn {
+  width: 280px;
+  height: 56px;
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+  color: #fff;
+  background: #0f7c41;
+}
+
+@media (max-width: 767px) {
+  .formCard {
+    display: none;
+  }
+  .mobileActions {
+    display: flex;
+  }
+}
+
+@media (min-width: 768px) {
+  .formCard {
+    display: block;
+  }
+  .mobileActions {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .registrationSection {
+    padding-top: 29px;
+    padding-bottom: 81px;
+  }
+
+  .layoutWrapper {
+    flex-direction: row;
+    gap: 32px;
+  }
+
+  .logo {
+    margin-bottom: 45px;
+  }
+
+  .webinarInfoWrapper {
+    gap: 24px;
+  }
+
+  .webinarMetaWrapper {
+    gap: 14px;
+  }
+
+  .webinarMeta {
+    padding: 6px 16px;
+    font-size: 16px;
+    line-height: 150%;
+  }
+
+  .mainTitle {
+    font-size: 36px;
+    line-height: 122%;
+    max-width: 336px;
+  }
+
+  .description {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: #010101;
+    max-width: 336px;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .registrationSection {
+    padding-top: 40px;
+    padding-bottom: 110px;
+  }
+
+  .layoutWrapper {
+    gap: 104px;
+  }
+
+  .logo {
+    margin-bottom: 88px;
+  }
+
+  .webinarInfoWrapper {
+    gap: 40px;
+  }
+
+  .webinarMetaWrapper {
+    flex-direction: row;
+    gap: 30px;
+  }
+
+  .mainTitle {
+    font-size: 56px;
+    line-height: 121%;
+    max-width: 624px;
+  }
+
+  .description {
+    font-size: 20px;
+    line-height: 140%;
+    max-width: 554px;
+  }
+
+  /* Registration Form */
+
+  .countdownLabel {
+    font-size: 28px;
+    line-height: 114%;
+  }
+}

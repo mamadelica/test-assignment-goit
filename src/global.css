@@ -1,0 +1,63 @@
+:root {
+  --text: #010101;
+  --bg: #f1f1f1;
+  --accent: #0f7c41;
+
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-border: rgba(170, 59, 255, 0.5);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --font-family: "Montserrat", sans-serif;
+  --second-family: "Gotham Pro", sans-serif;
+}
+
+.container {
+  margin: 0 auto;
+  padding-inline: 20px;
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+    padding-inline: 32px;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .container {
+    padding-inline: 112px;
+  }
+}
+
+body {
+  font-family: var(--font-family);
+  margin: 0 auto;
+}
+
+p,
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: #3577f7;
+}
+
+button {
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+}
