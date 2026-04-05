@@ -13,6 +13,7 @@
 .input {
   padding: 12px 16px;
   width: 320px;
+  height: 48px;
   background: #f2f4fa;
   border: none;
   box-sizing: border-box;
@@ -110,4 +111,28 @@
   text-align: center;
   color: #fff;
   background: #0f7c41;
+}
+
+@media only screen and (min-width: 767px) {
+  .form {
+    max-width: 296px;
+  }
+
+  .input {
+    width: 296px;
+  }
+
+  .submitBtn {
+    height: 64px;
+  }
+}
+
+@media only screen and (min-width: 1439px) {
+  .form {
+    max-width: 384px;
+  }
+
+  .input {
+    width: 384px;
+  }
 }

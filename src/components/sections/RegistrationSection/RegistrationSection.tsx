@@ -3,6 +3,7 @@ import CountdownTimer from "../../common/CountdownTimer/CountdownTimer";
 import RegistrationForm from "../../common/RegistrationForm/RegistrationForm";
 import RegistrationModal from "../../common/RegistrationModal/RegistrationModal";
 import { useState } from "react";
+import BackgroundDecor from "../../ui/BackgroundDecor/BackgroundDecor";
 
 export default function RegistrationSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,6 +13,9 @@ export default function RegistrationSection() {
       className={styles.registrationSection}
       aria-labelledby="registrationTitle"
     >
+      {/* Декоративний фон */}
+      <BackgroundDecor />
+
       <div className="container">
         <a href="/" className={styles.logo} aria-label="GO IT — головна">
           <img
@@ -59,6 +63,11 @@ export default function RegistrationSection() {
           </div>
 
           <div className={styles.formWrapper} aria-labelledby="formHeading">
+            <img
+              src="/src/assets/icons/arrow.svg"
+              alt=""
+              className={styles.arrow}
+            />
             <h2 id="formHeading" className={"srOnly"}>
               Форма реєстрації
             </h2>

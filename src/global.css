@@ -3,36 +3,50 @@
   --bg: #f1f1f1;
   --accent: #0f7c41;
 
-  --accent-bg: rgba(170, 59, 255, 0.1);
+  --links: #3577f7;
   --accent-border: rgba(170, 59, 255, 0.5);
   --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --shadow: 0 0 20px 0 rgba(15, 124, 65, 0.2);
 
   --font-family: "Montserrat", sans-serif;
   --second-family: "Gotham Pro", sans-serif;
 }
 
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit; /* щоб усі елементи рахували ширину однаково */
+}
+
+body {
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+}
+
 .container {
   margin: 0 auto;
   padding-inline: 20px;
+  max-width: 360px;
 }
 
 @media only screen and (min-width: 768px) {
   .container {
     padding-inline: 32px;
+    max-width: 768px;
   }
 }
 
 @media only screen and (min-width: 1440px) {
   .container {
     padding-inline: 112px;
+    max-width: 1440px;
   }
-}
-
-body {
-  font-family: var(--font-family);
-  margin: 0 auto;
 }
 
 p,
@@ -44,7 +58,7 @@ h3 {
 
 a {
   text-decoration: none;
-  color: #3577f7;
+  color: var(--links);
 }
 
 button {
@@ -52,6 +66,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .srOnly {

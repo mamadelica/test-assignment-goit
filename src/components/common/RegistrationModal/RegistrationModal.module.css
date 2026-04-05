@@ -14,7 +14,7 @@
   max-width: 360px;
   max-height: 680px;
   background: #fff;
-  box-shadow: 0 0 20px 0 rgba(15, 124, 65, 0.2);
+  box-shadow: var(--shadow);
   position: relative;
 }
 
