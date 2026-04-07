@@ -13,11 +13,8 @@ export default function BackgroundDecor() {
       <div className={`${styles.square10} ${styles.squareCenter}`}></div>
       <div className={`${styles.square10} ${styles.squareRight}`}></div>
       <div className={`${styles.square10} ${styles.squareTopRight}`}></div>
-      <img
-        src="/src/assets/icons/TableDecor.svg"
-        className={styles.tableDecor}
-      />
-      <img src="/src/assets/images/decor-img.png" className={styles.decorImg} />
+      <img src="/assets/icons/TableDecor.svg" className={styles.tableDecor} />
+      <img src="/assets/images/decor-img.png" className={styles.decorImg} />
     </div>
   );
 }
