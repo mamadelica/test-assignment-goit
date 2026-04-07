@@ -1,7 +1,7 @@
-import React from "react";
 import styles from "./RegistrationModal.module.css";
 import CountdownTimer from "../CountdownTimer/CountdownTimer";
 import RegistrationForm from "../RegistrationForm/RegistrationForm";
+import { TARGET_DATE } from "../../../constants/dateTime.ts";
 
 type RegistrationModalProps = {
   onClose: () => void;
@@ -9,7 +9,14 @@ type RegistrationModalProps = {
 
 export default function RegistrationModal({ onClose }: RegistrationModalProps) {
   return (
-    <div className={styles.modalBackdrop}>
+    <div
+      className={styles.modalBackdrop}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
       <div className={`${styles.modal} container`}>
         <div className={styles.modalHeadWrapper}>
           <a href="/" className={styles.logo} aria-label="GO IT — головна">
@@ -39,7 +46,7 @@ export default function RegistrationModal({ onClose }: RegistrationModalProps) {
         </div>
         <div className={styles.modalContentWrapper}>
           <p className={styles.timerLabel}>Реєструйся просто зараз</p>
-          <CountdownTimer targetDate="2026-05-10T19:30:00Z" />
+          <CountdownTimer targetDate={TARGET_DATE} />
           <RegistrationForm />
         </div>
       </div>

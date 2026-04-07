@@ -4,6 +4,7 @@ import RegistrationForm from "../../common/RegistrationForm/RegistrationForm";
 import RegistrationModal from "../../common/RegistrationModal/RegistrationModal";
 import { useState } from "react";
 import BackgroundDecor from "../../ui/BackgroundDecor/BackgroundDecor";
+import { TARGET_DATE } from "../../../constants/dateTime.ts";
 
 export default function RegistrationSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,10 +46,7 @@ export default function RegistrationSection() {
               <p className={styles.webinarMeta}>
                 {" "}
                 <span></span>
-                Старт:{" "}
-                <time className={styles.eventTime} dateTime="2025-01-10T19:30">
-                  10 січня, 19:30
-                </time>
+                Старт: <time className={styles.eventTime}>10 січня, 19:30</time>
               </p>
             </div>
 
@@ -72,12 +70,10 @@ export default function RegistrationSection() {
               Форма реєстрації
             </h2>
 
-            {/* Таймер — завжди показаний */}
-
             <p className={styles.timerLabel}>Реєструйся просто зараз</p>
 
-            <CountdownTimer targetDate="2026-05-10T19:30:00Z" />
-            {/* Форма — видима на планшеті та десктопі, прихована на мобільних */}
+            <CountdownTimer targetDate={TARGET_DATE} />
+
             <div
               className={`${styles.formCard} ${styles.desktopVisible}`}
               aria-hidden={false}
@@ -85,7 +81,6 @@ export default function RegistrationSection() {
               <RegistrationForm />
             </div>
 
-            {/* Дії для мобільної версії: показуємо тільки кнопку під таймером */}
             <div className={styles.mobileActions}>
               <button
                 type="button"
@@ -101,7 +96,6 @@ export default function RegistrationSection() {
         </div>
       </div>
 
-      {/* Модалка — містить таймер, форму і кнопку; відкривається на мобільних */}
       {isModalOpen && (
         <RegistrationModal onClose={() => setIsModalOpen(false)} />
       )}

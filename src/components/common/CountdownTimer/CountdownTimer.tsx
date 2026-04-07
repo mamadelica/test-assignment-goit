@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./CountdownTimer.module.css";
 
 type Props = {
-  /** Цільова дата у форматі ISO 8601, наприклад "2025-01-10T19:30:00Z" */
+  /** Цільова дата у форматі ISO 8601 */
   targetDate?: string;
-  /** Додатковий клас для кастомізації */
-  className?: string;
 };
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export default function CountdownTimer({
   targetDate = new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
-  className = "",
 }: Props) {
   const [now, setNow] = useState<number>(() => Date.now());
 
@@ -33,11 +30,7 @@ export default function CountdownTimer({
 
   if (isFinished) {
     return (
-      <div
-        className={`${styles.countdown} ${className}`}
-        role="status"
-        aria-live="polite"
-      >
+      <div className={styles.countdown} role="status" aria-live="polite">
         <span className={styles.finishedText}>Подія вже відбулась</span>
       </div>
     );
@@ -45,7 +38,7 @@ export default function CountdownTimer({
 
   return (
     <div
-      className={`${styles.countdown} ${className}`}
+      className={styles.countdown}
       role="timer"
       aria-live="polite"
       aria-atomic="true"

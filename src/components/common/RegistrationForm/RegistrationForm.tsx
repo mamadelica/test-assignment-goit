@@ -1,5 +1,8 @@
-import React, { useRef, useState } from "react";
+import React from "react";
+import { Formik, Form, Field, ErrorMessage, type FormikErrors } from "formik";
+import * as Yup from "yup";
 import styles from "./RegistrationForm.module.css";
+import type { FormikHelpers } from "formik";
 
 export type RegistrationFormData = {
   name: string;
@@ -8,219 +11,220 @@ export type RegistrationFormData = {
   agree: boolean;
 };
 
+type RegistrationFormErrors = FormikErrors<RegistrationFormData> & {
+  form?: string;
+};
+
 type Props = {
-  onSubmit?: (data: RegistrationFormData) => Promise<void> | void;
-  /** Якщо форма в модалці — можна передати callback для закриття */
   onClose?: () => void;
 };
 
-export default function RegistrationForm({ onSubmit, onClose }: Props) {
-  // контролювані поля
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState(""); // зберігаємо тільки цифри/формат
-  const [agree, setAgree] = useState(false);
+// схема валідації Yup
+const validationSchema = Yup.object({
+  name: Yup.string().trim().required("Вкажіть імʼя"),
+  email: Yup.string()
+    .trim()
+    .email("Невірний формат email")
+    .required("Вкажіть email"),
+  phone: Yup.string()
+    .trim()
+    .matches(/^\+?\d{9,15}$/, "Невірний формат телефону")
+    .required("Вкажіть телефон"),
+  agree: Yup.boolean().oneOf([true], "Потрібно погодитись з умовами"),
+});
 
-  // стан валідації/відправки
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // реф на перше поле для фокусу при відкритті модалки
-  const nameRef = useRef<HTMLInputElement | null>(null);
-
-  // прості валідатори
-  const validate = (): boolean => {
-    const e: Record<string, string> = {};
-    if (!name.trim()) e.name = "Вкажіть імʼя";
-    if (!email.trim()) e.email = "Вкажіть email";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      e.email = "Невірний формат email";
-    if (!phone.trim()) e.phone = "Вкажіть телефон";
-    else if (!/^\+?\d{9,15}$/.test(phone.replace(/\s+/g, "")))
-      e.phone = "Невірний формат телефону";
-    if (!agree) e.agree = "Потрібно погодитись з умовами";
-    setErrors(e);
-    return Object.keys(e).length === 0;
+export default function RegistrationForm({ onClose }: Props) {
+  const initialValues: RegistrationFormData = {
+    name: "",
+    email: "",
+    phone: "",
+    agree: false,
   };
 
-  // обробник submit
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isSubmitting) return;
-    if (!validate()) return;
-
-    const payload: RegistrationFormData = {
-      name: name.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
-      agree,
-    };
-
+  const handleSubmit = async (
+    values: RegistrationFormData,
+    {
+      setSubmitting,
+      setErrors,
+      resetForm,
+    }: FormikHelpers<RegistrationFormData>,
+  ) => {
     try {
-      setIsSubmitting(true);
-      // викликаємо зовнішній onSubmit якщо передано
-      await onSubmit?.(payload);
-      // після успіху можна очистити форму або закрити модалку
-      setName("");
-      setEmail("");
-      setPhone("");
-      setAgree(false);
-      setErrors({});
+      const response = await fetch("https://example.com/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        throw new Error("Помилка запиту");
+      }
+
+      const result = await response.json();
+      console.log("Успіх:", result);
+
+      resetForm();
       onClose?.();
     } catch (err) {
       console.error(err);
-      setErrors({ form: "Помилка при відправці. Спробуйте пізніше." });
+      setErrors({
+        form: "Помилка при відправці. Спробуйте пізніше.",
+      } as RegistrationFormErrors);
     } finally {
-      setIsSubmitting(false);
+      setSubmitting(false);
     }
   };
 
-  // просте форматування телефону (опціонально)
-  const handlePhoneChange = (value: string) => {
-    // залишаємо тільки цифри та плюс
-    const cleaned = value.replace(/[^\d+]/g, "");
-    setPhone(cleaned);
-  };
-
   return (
-    <form
-      className={styles.form}
+    <Formik<RegistrationFormData>
+      initialValues={initialValues}
+      validationSchema={validationSchema}
       onSubmit={handleSubmit}
-      noValidate
-      aria-labelledby="formHeading"
     >
-      {/* загальна помилка */}
-      {errors.form && (
-        <div className={styles.formError} role="alert">
-          {errors.form}
-        </div>
-      )}
+      {({ isSubmitting, errors, setFieldValue }) => (
+        <Form className={styles.form} noValidate aria-labelledby="formHeading">
+          {/* Загальна помилка */}
+          {(errors as RegistrationFormErrors).form && (
+            <div className={styles.formError} role="alert">
+              {(errors as RegistrationFormErrors).form}
+            </div>
+          )}
 
-      <div className={styles.field}>
-        <label htmlFor="name" className={"srOnly"}>
-          Імʼя
-        </label>
-        <input
-          id="name"
-          ref={nameRef}
-          className={`${styles.input} ${errors.name ? styles.invalid : ""}`}
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Введи своє імʼя"
-          aria-invalid={!!errors.name}
-          aria-describedby={errors.name ? "name-error" : undefined}
-          required
-        />
-        {errors.name && (
-          <div id="name-error" className={styles.error}>
-            {errors.name}
-          </div>
-        )}
-      </div>
-
-      <div className={styles.field}>
-        <label htmlFor="email" className={"srOnly"}>
-          E‑mail
-        </label>
-        <input
-          id="email"
-          className={`${styles.input} ${errors.email ? styles.invalid : ""}`}
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Введи свій E‑mail"
-          aria-invalid={!!errors.email}
-          aria-describedby={errors.email ? "email-error" : undefined}
-          required
-        />
-        {errors.email && (
-          <div id="email-error" className={styles.error}>
-            {errors.email}
-          </div>
-        )}
-      </div>
-
-      <div className={styles.field}>
-        <label htmlFor="phone" className={"srOnly"}>
-          Телефон
-        </label>
-        <div className={styles.inputWrapper}>
-          <img
-            src="/src/assets/icons/flag.svg"
-            alt="UA"
-            className={styles.flagIcon}
-          />
-          <input
-            id="phone"
-            className={`${styles.input} ${styles.inputPhone} ${errors.phone ? styles.invalid : ""}`}
-            type="tel"
-            value={phone}
-            onChange={(e) => handlePhoneChange(e.target.value)}
-            placeholder="+380 95 --- -- --"
-            aria-invalid={!!errors.phone}
-            aria-describedby={errors.phone ? "phone-error" : undefined}
-            required
-          />
-        </div>
-        {errors.phone && (
-          <div id="phone-error" className={styles.error}>
-            {errors.phone}
-          </div>
-        )}
-      </div>
-
-      <div className={styles.fieldCheckbox}>
-        <label className={styles.checkboxWrapper}>
-          <input
-            id="agree"
-            type="checkbox"
-            checked={agree}
-            onChange={(e) => setAgree(e.target.checked)}
-            className={styles.checkbox}
-          />
-          <span className={styles.customCheckbox}>
-            <img
-              src="/src/assets/icons/checkboxBorder.svg"
-              alt=""
-              className={styles.checkboxBorder}
+          {/* name */}
+          <div className={styles.field}>
+            <label htmlFor="name" className="srOnly">
+              Імʼя
+            </label>
+            <Field
+              id="name"
+              name="name"
+              type="text"
+              className={`${styles.input} ${errors.name ? styles.invalid : ""}`}
+              placeholder="Введи своє імʼя"
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? "name-error" : undefined}
+              required
             />
-            <img
-              src="/src/assets/icons/checkboxChecked.svg"
-              alt=""
-              className={styles.checkboxChecked}
+            <ErrorMessage
+              name="name"
+              component="div"
+              id="name-error"
+              className={styles.error}
             />
-          </span>
-        </label>
+          </div>
 
-        <span className={styles.checkboxText}>
-          Я згоден з{" "}
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            Політика конфіденційності
-          </a>{" "}
-          та{" "}
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            Умови користування
-          </a>
-        </span>
-      </div>
+          {/* email */}
+          <div className={styles.field}>
+            <label htmlFor="email" className="srOnly">
+              E‑mail
+            </label>
+            <Field
+              id="email"
+              name="email"
+              type="email"
+              className={`${styles.input} ${errors.email ? styles.invalid : ""}`}
+              placeholder="Введи свій E‑mail"
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? "email-error" : undefined}
+              required
+            />
+            <ErrorMessage
+              name="email"
+              component="div"
+              id="email-error"
+              className={styles.error}
+            />
+          </div>
 
-      {errors.agree && (
-        <div id="agree-error" className={styles.error}>
-          {errors.agree}
-        </div>
+          {/* phone */}
+          <div className={styles.field}>
+            <label htmlFor="phone" className="srOnly">
+              Телефон
+            </label>
+            <div className={styles.inputWrapper}>
+              <img
+                src="/src/assets/icons/flag.svg"
+                alt="UA"
+                className={styles.flagIcon}
+              />
+              <Field
+                id="phone"
+                name="phone"
+                type="tel"
+                className={`${styles.input} ${styles.inputPhone} ${errors.phone ? styles.invalid : ""}`}
+                placeholder="+380 95 --- -- --"
+                aria-invalid={!!errors.phone}
+                aria-describedby={errors.phone ? "phone-error" : undefined}
+                required
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  const cleaned = e.target.value.replace(/[^\d+]/g, "");
+                  setFieldValue("phone", cleaned);
+                }}
+              />
+            </div>
+            <ErrorMessage
+              name="phone"
+              component="div"
+              id="phone-error"
+              className={styles.error}
+            />
+          </div>
+
+          {/* Чекбокс */}
+          <div className={styles.fieldCheckbox}>
+            <label className={styles.checkboxWrapper}>
+              <Field
+                id="agree"
+                name="agree"
+                type="checkbox"
+                className={styles.checkbox}
+              />
+              <span className={styles.customCheckbox}>
+                <img
+                  src="/src/assets/icons/checkboxBorder.svg"
+                  alt=""
+                  className={styles.checkboxBorder}
+                />
+                <img
+                  src="/src/assets/icons/checkboxChecked.svg"
+                  alt=""
+                  className={styles.checkboxChecked}
+                />
+              </span>
+            </label>
+            <span className={styles.checkboxText}>
+              Я згоден з{" "}
+              <a href="#" target="_blank" rel="noopener noreferrer">
+                Політика конфіденційності
+              </a>{" "}
+              та{" "}
+              <a href="#" target="_blank" rel="noopener noreferrer">
+                Умови користування
+              </a>
+            </span>
+          </div>
+          <ErrorMessage
+            name="agree"
+            component="div"
+            id="agree-error"
+            className={styles.error}
+          />
+
+          {/* Кнопка */}
+          <div className={styles.actions}>
+            <button
+              type="submit"
+              className={styles.submitBtn}
+              disabled={isSubmitting}
+              aria-disabled={isSubmitting}
+            >
+              {isSubmitting ? "Відправка..." : "Зареєструватися"}
+            </button>
+          </div>
+        </Form>
       )}
-
-      <div className={styles.actions}>
-        <button
-          type="submit"
-          className={styles.submitBtn}
-          disabled={isSubmitting}
-          aria-disabled={isSubmitting}
-        >
-          {isSubmitting ? "Відправка..." : "Зареєструватися"}
-        </button>
-      </div>
-    </form>
+    </Formik>
   );
 }
