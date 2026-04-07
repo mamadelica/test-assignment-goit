@@ -21,12 +21,12 @@ export default function RegistrationModal({ onClose }: RegistrationModalProps) {
         <div className={styles.modalHeadWrapper}>
           <a href="/" className={styles.logo} aria-label="GO IT — головна">
             <img
-              src={"/src/assets/icons/logo-left.svg"}
+              src={"/assets/icons/logo-left.svg"}
               alt="GO IT знак"
               className={styles.logoMark}
             />
             <img
-              src={"/src/assets/icons/logo-right.svg"}
+              src={"/assets/icons/logo-right.svg"}
               alt="GO IT"
               className={styles.logoWordmark}
             />
@@ -38,7 +38,7 @@ export default function RegistrationModal({ onClose }: RegistrationModalProps) {
             onClick={onClose}
           >
             <img
-              src="/src/assets/icons/close-btn.svg"
+              src="/assets/icons/close-btn.svg"
               alt="Закрити"
               className={styles.closeIcon}
             />
