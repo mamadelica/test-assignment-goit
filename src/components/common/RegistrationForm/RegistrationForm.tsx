@@ -145,7 +145,7 @@ export default function RegistrationForm({ onClose }: Props) {
             </label>
             <div className={styles.inputWrapper}>
               <img
-                src="/assets/icons/flag.svg"
+                src="./assets/icons/flag.svg"
                 alt="UA"
                 className={styles.flagIcon}
               />
@@ -183,12 +183,12 @@ export default function RegistrationForm({ onClose }: Props) {
               />
               <span className={styles.customCheckbox}>
                 <img
-                  src="/assets/icons/checkboxBorder.svg"
+                  src="./assets/icons/checkboxBorder.svg"
                   alt=""
                   className={styles.checkboxBorder}
                 />
                 <img
-                  src="/assets/icons/checkboxChecked.svg"
+                  src="./assets/icons/checkboxChecked.svg"
                   alt=""
                   className={styles.checkboxChecked}
                 />
